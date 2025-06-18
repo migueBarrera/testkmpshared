@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.tuempresa"
-version = "1.0.0"
+version = "1.0.1"
 
 kotlin {
     androidTarget {
@@ -51,7 +51,7 @@ publishing {
             from(components["kotlin"])
             groupId = "com.tuempresa"
             artifactId = "kmplibrarytest"
-            version = "1.0.0"
+            version = "1.0.1"
         }
     }
     repositories {
