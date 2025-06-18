@@ -7,6 +7,9 @@ plugins {
     alias(libs.plugins.mavenPublish)
 }
 
+group = "com.tuempresa"
+version = "1.0.0"
+
 kotlin {
     androidTarget {
         compilations.all {
