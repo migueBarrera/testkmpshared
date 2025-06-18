@@ -27,7 +27,7 @@ kotlin {
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        version = "1.0"
+        version = "1.0.1"
         ios.deploymentTarget = "16.0"
         framework {
             baseName = "shared"
@@ -47,10 +47,18 @@ kotlin {
 
 publishing {
     publications {
-        create<MavenPublication>("release") {
+        create<MavenPublication>("kmp") {
             from(components["kotlin"])
             groupId = "com.tuempresa"
             artifactId = "kmplibrarytest"
+            version = "1.0.1"
+        }
+        create<MavenPublication>("android") {
+            afterEvaluate {
+                from(components["release"])
+            }
+            groupId = "com.tuempresa"
+            artifactId = "kmplibrarytest-android"
             version = "1.0.1"
         }
     }
