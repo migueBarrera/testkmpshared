@@ -24,6 +24,26 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    tasks.register("assembleXCFramework", Exec::class) {
+        group = "build"
+        description = "Assembles XCFramework for iOS"
+
+        val frameworkName = "shared"
+        val outputDir = file("$buildDir/XCFramework")
+
+        doFirst {
+            outputDir.mkdirs()
+        }
+
+        commandLine(
+            "xcodebuild",
+            "-create-xcframework",
+            "-framework", "$buildDir/bin/iosX64/releaseFramework/$frameworkName.framework",
+            "-framework", "$buildDir/bin/iosSimulatorArm64/releaseFramework/$frameworkName.framework",
+            "-framework", "$buildDir/bin/iosArm64/releaseFramework/$frameworkName.framework",
+            "-output", "$outputDir/$frameworkName.xcframework"
+        )
+    }
 
     cocoapods {
         summary = "Some description for the Shared Module"
