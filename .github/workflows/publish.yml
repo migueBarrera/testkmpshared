@@ -17,8 +17,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build
-        run: ./gradlew assemble --stacktrace
-
-      - name: Release library
-        run: ./gradlew shared:publish
+      - name: Publish to GitHub Packages (Maven)
+        run: ./gradlew publish
+        env:
+          USERNAME_GITHUB: ${{ secrets.GITHUB_ACTOR }}
+          TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}

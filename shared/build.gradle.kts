@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.mavenPublish)
 }
 
 kotlin {
@@ -37,6 +38,27 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            from(components["kotlin"])
+            groupId = "com.tuempresa"
+            artifactId = "tu-libreria-kmp"
+            version = "1.0.0"
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/migueBarrera/testkmpshared")
+            credentials {
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME_GITHUB")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN_GITHUB")
+            }
         }
     }
 }
