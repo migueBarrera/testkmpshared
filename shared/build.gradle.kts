@@ -45,34 +45,48 @@ kotlin {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("kmp") {
-            from(components["kotlin"])
-            groupId = "com.tuempresa"
-            artifactId = "kmplibrarytest"
-            version = "1.0.1"
-        }
-        create<MavenPublication>("android") {
-            afterEvaluate {
-                from(components["androidRelease"])
-            }
-            groupId = "com.tuempresa"
-            artifactId = "kmplibrarytest-android"
-            version = "1.0.1"
-        }
+afterEvaluate {
+    println("Available components:")
+    components.forEach {
+        println("- ${it.name}")
     }
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/migueBarrera/testkmpshared")
-            credentials {
-                username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME_GITHUB")
-                password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN_GITHUB")
+    publishing {
+        publications {
+            create<MavenPublication>("kmp") {
+                from(components["kotlin"])
+                groupId = "com.tuempresa"
+                artifactId = "kmplibrarytest"
+                version = "1.0.1"
+            }
+            create<MavenPublication>("android") {
+                val releaseVariant = project.components.findByName("release")
+
+                if (releaseVariant != null) {
+                    from(releaseVariant)
+                } else {
+                    // Si no existe el componente, publica manualmente el AAR
+                    artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
+                        builtBy("assembleRelease")
+                    }
+                    groupId = "com.tuempresa"
+                    artifactId = "kmplibrarytest-android"
+                    version = "1.0.1"
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/migueBarrera/testkmpshared")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME_GITHUB")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN_GITHUB")
+                }
             }
         }
     }
 }
+
 
 android {
     namespace = "com.example.myapplication"
@@ -83,5 +97,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+        }
     }
 }
