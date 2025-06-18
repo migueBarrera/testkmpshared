@@ -50,7 +50,7 @@ publishing {
         create<MavenPublication>("release") {
             from(components["kotlin"])
             groupId = "com.tuempresa"
-            artifactId = "tu-libreria-kmp"
+            artifactId = "kmplibrarytest"
             version = "1.0.0"
         }
     }
