@@ -55,12 +55,7 @@ afterEvaluate {
                 artifactId = "kmplibrarytest"
                 version = "1.0.1"
             }
-            create<MavenPublication>("android") {
-                from(components["androidRelease"])
-                groupId = "com.tuempresa"
-                artifactId = "kmplibrarytest-android"
-                version = "1.0.1"
-            }
+           
         }
         repositories {
             maven {
