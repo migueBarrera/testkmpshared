@@ -20,5 +20,5 @@ jobs:
       - name: Publish to GitHub Packages (Maven)
         run: ./gradlew publish
         env:
-          USERNAME_GITHUB: ${{ secrets.GITHUB_ACTOR }}
-          TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME_GITHUB: ${{ secrets.USER_GITHUB }}
+          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
