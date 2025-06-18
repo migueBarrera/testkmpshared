@@ -12,6 +12,7 @@ version = "1.0.1"
 
 kotlin {
     androidTarget {
+        publishLibraryVariants("release")
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
@@ -46,10 +47,6 @@ kotlin {
 }
 
 afterEvaluate {
-    println("Available components:")
-    components.forEach {
-        println("- ${it.name}")
-    }
     publishing {
         publications {
             create<MavenPublication>("kmp") {
@@ -59,19 +56,10 @@ afterEvaluate {
                 version = "1.0.1"
             }
             create<MavenPublication>("android") {
-                val releaseVariant = project.components.findByName("release")
-
-                if (releaseVariant != null) {
-                    from(releaseVariant)
-                } else {
-                    // Si no existe el componente, publica manualmente el AAR
-                    artifact("$buildDir/outputs/aar/${project.name}-release.aar") {
-                        builtBy("assembleRelease")
-                    }
-                    groupId = "com.tuempresa"
-                    artifactId = "kmplibrarytest-android"
-                    version = "1.0.1"
-                }
+                from(components["androidRelease"])
+                groupId = "com.tuempresa"
+                artifactId = "kmplibrarytest-android"
+                version = "1.0.1"
             }
         }
         repositories {
