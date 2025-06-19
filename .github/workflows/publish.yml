@@ -31,7 +31,7 @@ jobs:
         run: find . -type d -name '*XCFramework'
 
       - name: Zip XCFramework
-        run: zip -r shared-xcframework.zip build/XCFramework/release/shared.xcframework
+        run: zip -r shared-xcframework.zip shared/build/XCFrameworks/release/shared.xcframework
 
       - name: Create GitHub Release
         id: create_release
