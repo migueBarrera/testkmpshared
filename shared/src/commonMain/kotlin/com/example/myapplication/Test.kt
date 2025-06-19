@@ -1,12 +1,9 @@
 package com.example.myapplication
 
-class Greeting {
-    private val platform: Platform = getPlatform()
-
-    fun greet(): String {
-        return "Hello, ${platform.name} from KMP!"
-    }
-
+/**
+    * Esta es una clase de prueba.
+ */
+class Test {
     /**
      * Suma dos números enteros.
      *
@@ -15,6 +12,6 @@ class Greeting {
      * @return La suma de `a` y `b`.
      */
     fun greetComment(): String {
-        return "Hello, ${platform.name}!"
+        return "Hello!"
     }
 }

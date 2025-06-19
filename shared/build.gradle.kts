@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,7 +9,7 @@ plugins {
 }
 
 group = "com.tuempresa"
-version = "1.0.1"
+version = "1.0.2"
 
 kotlin {
     androidTarget {
@@ -21,37 +22,16 @@ kotlin {
             }
         }
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-    tasks.register("assembleXCFramework", Exec::class) {
-        group = "build"
-        description = "Assembles XCFramework for iOS"
 
-        val frameworkName = "shared"
-        val outputDir = file("$buildDir/XCFramework")
-
-        doFirst {
-            outputDir.mkdirs()
-        }
-
-        commandLine(
-            "xcodebuild",
-            "-create-xcframework",
-            "-framework", "$buildDir/bin/iosX64/releaseFramework/$frameworkName.framework",
-            "-framework", "$buildDir/bin/iosSimulatorArm64/releaseFramework/$frameworkName.framework",
-            "-framework", "$buildDir/bin/iosArm64/releaseFramework/$frameworkName.framework",
-            "-output", "$outputDir/$frameworkName.xcframework"
-        )
-    }
-
-    cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0.1"
-        ios.deploymentTarget = "16.0"
-        framework {
+    val xcf = XCFramework()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
             baseName = "shared"
+            xcf.add(this)
             isStatic = true
         }
     }
@@ -73,7 +53,7 @@ afterEvaluate {
                 from(components["kotlin"])
                 groupId = "com.tuempresa"
                 artifactId = "kmplibrarytest"
-                version = "1.0.1"
+                version = "1.0.2"
             }
            
         }
