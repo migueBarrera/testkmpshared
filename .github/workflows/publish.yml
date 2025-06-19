@@ -1,7 +1,9 @@
 name: Publish KMP Library
 
 on:
-  push:  # Ejecutar en cada push a cualquier rama
+  push:
+    branches:
+      - master  # Solo ejecutar en commits a master
 
 jobs:
   publish:
