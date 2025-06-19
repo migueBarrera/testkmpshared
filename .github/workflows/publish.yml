@@ -17,18 +17,21 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Publish to GitHub Packages (Maven)
-        run: ./gradlew publish
-        env:
-          USERNAME_GITHUB: ${{ secrets.USER_GITHUB }}
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+#      - name: Publish to GitHub Packages (Maven)
+#        run: ./gradlew publish
+#        env:
+#          USERNAME_GITHUB: ${{ secrets.USER_GITHUB }}
+#          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
 
       # ios
       - name: Build XCFramework
         run: ./gradlew assembleXCFramework
 
+      - name: Build XCFramework FIND
+        run: find . -type d -name '*XCFramework'
+
       - name: Zip XCFramework
-        run: zip -r shared-xcframework.zip build/XCFramework/shared.xcframework
+        run: zip -r shared-xcframework.zip build/XCFramework/release/shared.xcframework
 
       - name: Create GitHub Release
         id: create_release
